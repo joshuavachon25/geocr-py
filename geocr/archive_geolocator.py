@@ -3,7 +3,7 @@ import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point, LineString, Polygon
 from difflib import SequenceMatcher
-
+from rapidfuzz.fuzz import ratio as rapid_ratio
 
 class ArchiveGeolocator:
     """
@@ -37,7 +37,8 @@ class ArchiveGeolocator:
         match_label: str = "matched_ref",
         score_label: str = "match_score",
         similarity_threshold: float = 80,
-        sep: str = ";"
+        sep: str = ";",
+        method: str = "difflib"  # "difflib" ou "rapidfuzz"
         ) -> gpd.GeoDataFrame:
         """
         If 'gdf' is provided, it will be used; otherwise, 'csv_path' will be loaded.
@@ -67,7 +68,11 @@ class ArchiveGeolocator:
 
             for _, ref_row in self.reference.iterrows():
                 candidate = self._combine_fields(ref_row, ref_fields)
-                score = SequenceMatcher(None, query, candidate).ratio() * 100
+                if method == "rapidfuzz":
+                    score = rapid_ratio(query, candidate)
+                else:
+                    score = SequenceMatcher(None, query, candidate).ratio() * 100
+
                 if score > best_score:
                     best_score, best_match = score, candidate
                     best_geom = self._extract_point(ref_row.geometry)

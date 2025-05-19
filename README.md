@@ -133,7 +133,8 @@ gdf = geolocator.geocode_csv(
     match_label: str = 'matched_ref',
     score_label: str = 'match_score',
     similarity_threshold: float = 80,
-    sep: str = ';'
+    sep: str = ';',
+    method: string = "difflib" #difflib or rapidfuzz
 ) -> GeoDataFrame
 ```
 
