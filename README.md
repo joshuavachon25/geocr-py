@@ -1,6 +1,6 @@
-# GeoOCR
+# GeOCR
 
-**GeoOCR** is a Python library for automating OCR on historical archive images and extracting geospatial data. It provides:
+**GeOCR** is a Python library for automating OCR on historical archive images and extracting geospatial data. It provides:
 
 * **ArchiveImage**: image preprocessing, splitting and OCR.
 * **ArchiveCollection**: batch operations on collections of images.
